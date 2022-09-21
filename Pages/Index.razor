@@ -1,9 +1,231 @@
 ﻿@page "/"
+@using System.Text.RegularExpressions;
+@using System.Diagnostics;
+@using System.Threading;
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Bulls and Cows</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="container px-2">
+    <div class="row">
+        <div class="col-5">
+            <button class="btn btn-outline-dark shadow" @onclick="NewGame">New Games</button>
+        </div>
+@*        <div class="col text-center">
+            <label>@time</label>
+            <label>@password</label>
+        </div>*@
+    </div>
 
-Welcome to your new app.
+    <div class="form-group row pt-5">
+        <div class="col">
+            @if (!valid)
+            {
+                <label style="color:red;">Please enter a valid number</label>
+            }
+            else
+            {
+                <label />
+            }
+        </div>
+    </div>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    <div class="form-group row pb-5">
+        <div class="col-9">
+            <input class="form-control shadow" type="text" readonly=@inputrd placeholder="Please enter four numbers" maxlength="4" @bind=@input />
+        </div>
+        <div class="col text-end">
+            <button class="btn btn-outline-success shadow" disabled=@btndis @onclick="ConfirmClick">Confirm</button>
+        </div>
+    </div>
+
+    <div class="card text-center shadow">
+        <div class="card-body">
+            <div class="row justify-content-around px-5 pt-1">
+                <div class="col"></div>
+                <div class="col">Guess</div>
+                <div class="col">Result</div>
+            </div>
+            <div class="row justify-content-around px-5 pt-1">
+                <div class="col">1</div>
+                <div class="col">@guess_arr[0]</div>
+                <div class="col">@result_arr[0]</div>
+            </div>
+            <div class="row justify-content-around px-5 pt-1">
+                <div class="col">2</div>
+                <div class="col">@guess_arr[1]</div>
+                <div class="col">@result_arr[1]</div>
+            </div>
+            <div class="row justify-content-around px-5 pt-1">
+                <div class="col">3</div>
+                <div class="col">@guess_arr[2]</div>
+                <div class="col">@result_arr[2]</div>
+            </div>
+            <div class="row justify-content-around px-5 pt-1">
+                <div class="col">4</div>
+                <div class="col">@guess_arr[3]</div>
+                <div class="col">@result_arr[3]</div>
+            </div>
+            <div class="row justify-content-around px-5 pt-1">
+                <div class="col">5</div>
+                <div class="col">@guess_arr[4]</div>
+                <div class="col">@result_arr[4]</div>
+            </div>
+            <div class="row justify-content-around px-5 pt-1">
+                <div class="col">6</div>
+                <div class="col">@guess_arr[5]</div>
+                <div class="col">@result_arr[5]</div>
+            </div>
+            <div class="row justify-content-around px-5 pt-1">
+                <div class="col">7</div>
+                <div class="col">@guess_arr[6]</div>
+                <div class="col">@result_arr[6]</div>
+            </div>
+            <div class="row justify-content-around px-5 pt-1">
+                <div class="col">8</div>
+                <div class="col">@guess_arr[7]</div>
+                <div class="col">@result_arr[7]</div>
+            </div>
+        </div>
+    </div>
+
+    @if (success)
+    {
+        <div class="row pt-5">
+            <div class="col text-center">
+                <h3 style="color:red;">Congratulations！</h3>
+            </div>
+        </div>
+        <div class="row text-center">
+            <lable>Please click New Game to start a new game.</lable>
+        </div>
+    }
+
+    @if (fail)
+    {
+        <div class="row pt-5">
+            <div class="col text-center">
+                <h3 style="color:red;">Failed to pass...</h3>
+            </div>
+        </div>
+        <div class="row text-center">
+            <lable>Please click New Game to start a new game.</lable>
+        </div>
+    }
+
+</div>
+
+@code {
+    private bool inputrd = true;
+    private bool btndis = true;
+    private bool fail = false;
+    private bool success = false;
+    private bool valid = true;
+    private string password = "";
+
+    private string input { get; set; } = "456";
+    private string time { get; set; } = "789";
+
+    private string[] guess_arr = new string[8];
+    private string[] result_arr = new string[8];
+    private int count = 0;
+
+    Random random = new();
+
+    protected override void OnInitialized()
+    {
+        NewGame();
+    }
+
+    private void NewGame()
+    {
+        int res;
+        password = "";
+
+        for (int i = 0; i < 4; i++)
+        {
+            res = random.Next(0, 9);
+
+            while (password.Contains(res.ToString()))
+                res = random.Next(0, 9);
+
+            password += res.ToString();
+        }
+
+        for (int i = 0; i < 8; i++)
+        {
+            guess_arr[i] = "";
+            result_arr[i] = "";
+        }
+
+        OpenControl();
+    }
+
+    private void ConfirmClick()
+    {
+        Regex regex = new Regex("[0-9]{4}");
+
+        if (!regex.IsMatch(input))
+        {
+            input = "";
+
+            valid = false;
+
+            return;
+        }
+
+        valid = true;
+
+        var right = CheckResult();
+
+        if (!right)
+        {
+            count++;
+            input = "";
+
+            if (count == 8)
+                fail = true;
+        }
+        else success = true;
+
+        if (fail | success) CloseControl();
+    }
+
+    private bool CheckResult()
+    {
+        guess_arr[count] = input;
+
+        int bull = 0;
+        int cow = 0;
+
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < input.Length; j++)
+            {
+                if (password[i] == input[j])
+                {
+                    if (i == j) bull++;
+                    else cow++;
+                }
+            }
+        }
+
+        result_arr[count] = $"{bull}A{cow}B";
+
+        return bull == 4;
+    }
+
+    private void CloseControl()
+    {
+        inputrd = true;
+        btndis = true;
+    }
+
+    private void OpenControl()
+    {
+        inputrd = false;
+        btndis = false;
+
+        success = false;
+        fail = false;
+    }
+}

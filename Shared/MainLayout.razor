@@ -1,17 +1,13 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
+<main>
+    <div class="top-row fixed-top">
+        <h6>1A2B 猜數字 - Bulls and Cows</h6>
     </div>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
+    <article class="content">
+        @Body
+    </article>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+    <Footer />
+</main>
