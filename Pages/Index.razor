@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div class="form-group row pt-5">
+    <div class="form-group row pt-3">
         <div class="col">
             @if (!valid)
             {
@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <div class="form-group row pb-5">
+    <div class="form-group row pb-3">
         <div class="col-8">
             <input class="form-control shadow" type="text" readonly=@inputrd placeholder="Please enter four numbers" maxlength="4" @bind=@input />
         </div>
@@ -41,6 +41,7 @@
                 <div class="col">Guess</div>
                 <div class="col">Result</div>
             </div>
+            <hr />
             <div class="row justify-content-around px-5 pt-1">
                 <div class="col">1</div>
                 <div class="col">@guess_arr[0]</div>
@@ -86,7 +87,7 @@
 
     @if (success)
     {
-        <div class="row pt-5">
+        <div class="row pt-4">
             <div class="col text-center">
                 <h3 style="color:red;">Congratulations！</h3>
             </div>
@@ -96,9 +97,9 @@
         </div>
     }
 
-    @if (fail)
+    @if (true)
     {
-        <div class="row pt-5">
+        <div class="row pt-4">
             <div class="col text-center">
                 <h3 style="color:red;">Failed to pass...</h3>
             </div>
@@ -136,7 +137,7 @@
         int res;
         password = "";
         input = "";
-        count  =  0;
+        count = 0;
 
         for (int i = 0; i < 4; i++)
         {
