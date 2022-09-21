@@ -5,15 +5,15 @@
 
 <PageTitle>Bulls and Cows</PageTitle>
 
-<div class="container px-2">
+<div class="container px-3">
     <div class="row">
         <div class="col-5">
             <button class="btn btn-outline-dark shadow" @onclick="NewGame">New Games</button>
         </div>
-@*        <div class="col text-center">
+        @*        <div class="col text-center">
             <label>@time</label>
             <label>@password</label>
-        </div>*@
+            </div>*@
     </div>
 
     <div class="form-group row pt-5">
@@ -30,7 +30,7 @@
     </div>
 
     <div class="form-group row pb-5">
-        <div class="col-9">
+        <div class="col-8">
             <input class="form-control shadow" type="text" readonly=@inputrd placeholder="Please enter four numbers" maxlength="4" @bind=@input />
         </div>
         <div class="col text-end">
@@ -108,6 +108,7 @@
             </div>
         </div>
         <div class="row text-center">
+            <label>The password is <b>@password</b></label>
             <lable>Please click New Game to start a new game.</lable>
         </div>
     }
@@ -122,8 +123,8 @@
     private bool valid = true;
     private string password = "";
 
-    private string input { get; set; } = "456";
-    private string time { get; set; } = "789";
+    private string input { get; set; } = "";
+    //private string time { get; set; } = "";
 
     private string[] guess_arr = new string[8];
     private string[] result_arr = new string[8];
@@ -140,6 +141,8 @@
     {
         int res;
         password = "";
+        input = "";
+        count  =  0;
 
         for (int i = 0; i < 4; i++)
         {
