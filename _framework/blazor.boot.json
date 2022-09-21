@@ -7,7 +7,7 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "blazor-bulls-and-cows.dll": "sha256-5iK2B\/88jmp6lw6NPlq6Wl6qrijEZx9ys3x27gd0O9k=",
+      "blazor-bulls-and-cows.dll": "sha256-oIQITV260wHrN2F5AnyNGHjYEUSFbFCmMFMcKC9HWxc=",
       "Microsoft.AspNetCore.Components.dll": "sha256-Kp6lxcmVS2Yl7su3hdoB54+mF6u3duGC0BC\/AaS6bko=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-R516l0htcljqV5XCaLQkNC1Rk0h+SzudvI111ER6NRM=",
       "Microsoft.AspNetCore.Components.WebAssembly.dll": "sha256-WasyeyYTHVFINaKU2jkYAe37pDZBvtTueW3ySFvnDps=",
